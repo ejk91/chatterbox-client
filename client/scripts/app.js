@@ -3,6 +3,7 @@ var app = {
   server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
   username: window.location.search.slice(10),
   incomingData: []
+
 };
 
 app.init = function() {
@@ -61,6 +62,7 @@ app.fetch = function() {
         $('#chats').append('<div>' + message[i].username + ': ' + text + '<span class=' +
           message[i].roomname + '></span></div>');
       }
+
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -70,14 +72,16 @@ app.fetch = function() {
 };
 
 app.clearMessages = function() {
-  $('#chats').empty();
+  $('#message').empty();
 };
+
 
 app.renderMessage = function(message) {
   for (var i = 0; i < message.length; i++) {
     $('#chats').append('<div>' + message[i].username + ': ' + message[i].text + '</div>');
   }
 };
+
 
 app.renderRoom = function(room) {
   $('#roomSelect').append('<div>room</div>');
@@ -103,7 +107,7 @@ app.escape = function(message) {
   if (escape.indexOf(text[0]) !== -1) {
     text = "Attempted Hack:" + hack;
   }
-};
+
 
 $(document).ready(function() {
   $('#main').on('click', '.username', function() {
@@ -122,3 +126,4 @@ app.fetch();
 setInterval(function () {
   app.fetch();
 }, 1000);
+
