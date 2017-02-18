@@ -119,6 +119,6 @@ $(document).ready(function() {
 });
 
 app.fetch();
-// setInterval(function () {
-//   app.fetch();
-// }, 1000);
+setInterval(function () {
+  app.fetch();
+}, 1000);
