@@ -1,7 +1,9 @@
 // YOUR CODE HERE:
 var app = {
   server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
-  username: window.location.search.slice(10)
+  username: window.location.search.split('=')[1],
+  results: []
+
 };
 
 app.init = function() {
@@ -24,9 +26,9 @@ app.send = function(message) {
   // });
   $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
+    url: app.server,
     type: 'POST',
-    data: JSON.stringify(message),
+    data: message,
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
@@ -40,12 +42,17 @@ app.send = function(message) {
 
 app.fetch = function() {
   $.ajax({
-    url: app.server,
+    url: app.server + '?limit=100&order=-createdAt',
     type: 'GET',
-    data: JSON.stringify(message),
-    contentType: 'application/json',
+    //contentType: 'application/json',
     success: function (data) {
-      console.log('chatterbox: Message sent');
+      var results = data.results;
+      console.log(results);
+      for (var i = 0; i < results.length; i++) {
+        $('#chats').append('<div>' + results[i].username + ': ' + results[i].text 
+          + '|| Room: ' + results[i].roomname + '</div>');
+      }
+
     },
     error: function (data) {
       // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -55,12 +62,15 @@ app.fetch = function() {
 };
 
 app.clearMessages = function() {
-  $('#chats').empty();
+  $('#message').empty();
 };
 
-app.renderMessage = function(message) {
-  $('#chats').prepend('<div>' + app.username + ': ' + message + '</div>');
-};
+// app.renderMessage = function(results) {
+//   for (var i = app.results.length; i > 0; i--) {
+//     $('#chats').append('<div>' + app.results[i].username + ': ' + app.results[i].text +
+//       '/n' + 'room: ' + app.results[i].roomname + '</div>');
+//   }
+// };
 
 app.renderRoom = function(room) {
   $('#roomSelect').append('<div>room</div>');
@@ -70,8 +80,12 @@ app.handleUsernameClick = function() {
 };
 
 app.handleSubmit = function() {
-  var message = $('#message').val();
-  app.renderMessage(message);
+  var message = {
+    username: app.username,
+    text: $('#message').val(),
+    roomname: 'DEATHSTAR'
+  };
+  app.send(message);
 };
 
 $(document).ready(function() {
@@ -86,9 +100,6 @@ $(document).ready(function() {
   });
 });
 
-// setInterval(function () {
-//   app.send();
-
-// }, 1000);
+app.fetch();
 
 
