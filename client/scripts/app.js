@@ -28,7 +28,7 @@ app.send = function(message) {
   // This is the url you should use to communicate with the parse API server.
     url: app.server,
     type: 'POST',
-    data: message,
+    data: JSON.stringify(message),
     contentType: 'application/json',
     success: function (data) {
       console.log('chatterbox: Message sent');
