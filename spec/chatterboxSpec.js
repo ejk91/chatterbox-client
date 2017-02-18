@@ -96,6 +96,7 @@ describe('chatterbox', function() {
 
     describe('events', function() {
       it('should add a friend upon clicking their username', function() {
+
         sinon.spy(app, 'handleUsernameClick');
 
         app.renderMessage({
@@ -103,6 +104,8 @@ describe('chatterbox', function() {
           text: 'I didn\'t get a harumph outa that guy.!',
           roomname: 'lobby'
         });
+
+        //debugger;        
 
         app.init();
 
