@@ -106,6 +106,7 @@ app.handleSubmit = function() {
   console.log(typeof (message.text));
   app.send(message);
 };
+
 // app.escape = function(message) {
 //   var escape = [ '&', '<', '>', '"', "'"];
 //   var text = message.text;
@@ -127,6 +128,13 @@ $(document).ready(function() {
   });
   $('.button').on('click', function() {
     app.renderRoom();
+  });
+  $('#message').keypress(function(event) {
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if (keycode == '13') {
+      app.handleSubmit();
+      $('#message').val('');  
+    }
   });
 });
 
