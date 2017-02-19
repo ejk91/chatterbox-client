@@ -51,13 +51,20 @@ app.fetch = function() {
       app.clearMessages();
       var message = data.results;
       for (var i = 0; i < message.length; i++) {
-        var test = [ '&', '<', '>', '"', "'"];
         var text = message[i].text;
-        //var hack = message[i].text;
-        if (!!text && test.indexOf(text[0]) !== -1) {
-          var hack = text.slice(1);
-          text = 'Attempted Hack:' + hack;
+        
+        if (!!text) {
+          text = text.replace(/</g, " ");
+          text = text.replace(/$/g, " ");
+          text = text.replace(/'/g, " ");
+          text = text.replace(/"/g, " ");
+          text = text.replace(/&/g, " ");
         }
+
+        // if (!!text && test.indexOf(text[1]) !== -1) {
+        //   var hack = text.slice(10);
+        //   text = 'Attempted Hack:' + hack;
+        // }
 
         $('#chats').append('<div>' + message[i].username + ': ' + text + '<span class=' +
           message[i].roomname + '></span></div>');
@@ -72,7 +79,7 @@ app.fetch = function() {
 };
 
 app.clearMessages = function() {
-  $('#message').empty();
+  $('#chats').empty();
 };
 
 
@@ -99,14 +106,15 @@ app.handleSubmit = function() {
   console.log(typeof (message.text));
   app.send(message);
 };
-app.escape = function(message) {
-  var escape = [ '&', '<', '>', '"', "'"];
-  var text = message.text;
-  var hack = message.text;
+// app.escape = function(message) {
+//   var escape = [ '&', '<', '>', '"', "'"];
+//   var text = message.text;
+//   var hack = message.text;
 
-  if (escape.indexOf(text[0]) !== -1) {
-    text = "Attempted Hack:" + hack;
-  }
+//   if (escape.indexOf(text[0]) !== -1) {
+//     text = "Attempted Hack:" + hack;
+//   }
+// }
 
 
 $(document).ready(function() {
